@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/difficulty.dart';
+import 'package:flutterapp/data/task_dao.dart';
 
 class Task extends StatefulWidget {
   final String nome;
   final String foto;
   final int dificuldade;
 
-  const Task(this.nome, this.foto, this.dificuldade, {Key? key})
+   Task(this.nome, this.foto, this.dificuldade, {Key? key})
       : super(key: key);
+
+  int nivel = 0;
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int nivel = 0;
+
+  bool assetOrNetwordk() {
+    bool assets = false;
+    bool network = true;
+
+    if (widget.foto.contains("http")) {
+      return assets;
+    }
+    return network;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +35,41 @@ class _TaskState extends State<Task> {
       child: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),
-              color: Colors.blue,),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: Colors.blue,
+            ),
             height: 140,
           ),
           Column(
             children: [
               Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),color: Colors.white,),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: Colors.white,
+                ),
                 height: 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: Colors.black26,),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.black26,
+                      ),
                       width: 72,
                       height: 100,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: Image.asset(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        ),
+                        child: assetOrNetwordk()
+                            ? Image.asset(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Column(
@@ -66,9 +91,35 @@ class _TaskState extends State<Task> {
                       height: 52,
                       width: 52,
                       child: ElevatedButton(
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Deletar Tarefa"),
+                                  content: const Text("Você tem certeza que deseja deletar a tarefa?"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Fecha o dialog
+                                      },
+                                      child: const Text("Cancelar"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        TaskDao().delete(widget.nome);
+                                        Navigator.of(context).pop(); // Fecha o dialog
+                                      },
+                                      child: const Text("Deletar"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           onPressed: () {
                             setState(() {
-                              nivel++;
+                              widget.nivel++;
                             });
                           },
                           child: Column(
@@ -95,13 +146,15 @@ class _TaskState extends State<Task> {
                         width: 200,
                         child: LinearProgressIndicator(
                           color: Colors.white,
-                          value: (widget.dificuldade > 0) ? (nivel/widget.dificuldade) / 10 : 1,
+                          value: (widget.dificuldade > 0)
+                              ? (widget.nivel / widget.dificuldade) / 10
+                              : 1,
                         )),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Nivel: $nivel',
+                      'Nivel: ${widget.nivel}',
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
