@@ -1,16 +1,33 @@
 # flutterapp
 
-A new Flutter project.
+O Flutter é um framework que permite o desenvolvimento de aplicativos móveis, web e desktop utilizando a linguagem de programação Dart. Ele facilita a criação de aplicativos com uma única base de código que roda tanto em Android quanto em iOS, o que é conhecido como single codebase.
 
-## Getting Started
+O que aprendi
 
-This project is a starting point for a Flutter application.
+Curso Flutter: Widgets, Stateless, Stateful, Imagens e Animações:
 
-A few resources to get you started if this is your first Flutter project:
+- Criação e uso de widgets
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Diferenças e usos de Stateless e Stateful widgets
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Implementação de navegação e gerenciamento de estado
+
+
+
+Curso Flutter: Controller, navegação e estados:
+
+- Criação e validação de formulários
+
+- Navegação entre diferentes telas
+
+
+
+Curso Flutter: Aplicando Persistência de Dados:
+
+- Implementação de um banco de dados para salvar informações em dispositivos móveis
+
+- Uso do SQFLite, um dos bancos de dados mais populares na comunidade de desenvolvimento
+
+- Execução de operações CRUD
+
+- Utilização do widget FutureBuilder
